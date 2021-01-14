@@ -90,6 +90,9 @@ else
   esac
 fi
 
+#force the flag
+is_prerelease="true"
+
 if [ "$ARTIFACTORY_BASE_URL" != "" ]; then
   echo "ARTIFACTORY_BASE_URL set, trying to upload to artifactory"
 
