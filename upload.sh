@@ -25,6 +25,25 @@ else
   echo "Neither sha256sum nor shasum is available, cannot check hashes"
 fi
 
+if [ ! -z "$APPVEYOR" ]; then
+    TRAVIS_REPO_SLUG="$APPVEYOR_REPO_NAME"
+    TRAVIS_TAG="$APPVEYOR_REPO_TAG_NAME"
+    TRAVIS_BUILD_NUMBER="$APPVEYOR_BUILD_NUMBER"
+    TRAVIS_BUILD_ID="$APPVEYOR_BUILD_ID"
+    TRAVIS_BRANCH="$APPVEYOR_REPO_BRANCH"
+    TRAVIS_COMMIT="$APPVEYOR_REPO_COMMIT"
+    TRAVIS_JOB_ID="$APPVEYOR_JOB_ID"
+    TRAVIS_BUILD_WEB_URL="${APPVEYOR_URL}/project/${APPVEYOR_ACCOUNT_NAME}/${APPVEYOR_PROJECT_SLUG}/build/job/${APPVEYOR_JOB_ID}"
+    if [[ $APPVEYOR_REPO_COMMIT_MESSAGE =~ nodeploy ]] || [[ $APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED =~ nodeploy ]] ; then
+      echo "Release uploading disabled, commit message contains 'nodeploy'"
+      exit 0
+    fi
+    if [ ! -z "$APPVEYOR_PULL_REQUEST_NUMBER" ] ; then
+      echo "Release uploading disabled for pull requests"
+      exit 0
+    fi
+fi
+
 # The calling script (usually .travis.yml) can set a suffix to be used for
 # the tag and release name. This way it is possible to have a release for
 # the output of the CI/CD pipeline (marked as 'continuous') and also test
