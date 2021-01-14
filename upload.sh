@@ -90,7 +90,9 @@ else
   esac
 fi
 
-#force the flag
+#force these values for now
+RELEASE_NAME="continuous"
+RELEASE_TITLE="Continuous build"
 is_prerelease="true"
 
 if [ "$ARTIFACTORY_BASE_URL" != "" ]; then
